@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menú Restaurante</title>
+  <!-- Hoja de estilos principal -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ---------- Encabezado ---------- -->
+  <header class="app-header">
+    <h1>Menú Restaurante</h1>
+
+    <!-- Menu del dia  -->
+    <div class="day-badge" id="etiquetaDia"></div>
+
+  </header>
+
+<!-- ---------- Contenido  (Menus // Carrito) ---------- -->
+  <main class="layout">
+
+    <!-- Menu -->
+    <section class="menu" id="menuCompleto"> </section>
+
+    <!-- Carrito  -->
+    <aside class="cart" id="ContenidoCarrito">
+      <h2>Pedido</h2>
+      <div id="listarCarrito"></div>
+      <div class="totals">
+        <div>Subtotal: <strong id="subtotal">S/ 0.00</strong></div>
+        <div>Total: <strong id="total">S/ 0.00</strong></div>
+      </div>
+      <button id="vaciarCarrito" class="btn outline">Vaciar</button>
+      <button id="btnPago" class="btn primary">Continuar</button>
+    </aside>
+
+
+  </main>
+
+  <!-- ---------- Datos del cliente ---------- -->
+  <section class="checkout oculto" id="checkout">
+    <h2>Datos del cliente</h2>
+    <form id="formCliente" class="form">
+      <label>Nombre y apellido
+        <input type="text" id="cliNombre" required />
+      </label>
+      <label>Teléfono
+        <input type="tel" id="cliTelefono" required />
+      </label>
+      <label>DNI
+        <input type="text" id="cliDni" required />
+      </label>
+      <label>Dirección
+        <input type="text" id="cliDireccion" required />
+      </label>
+
+      <div class="checkout-actions">
+        <button type="button" id="regresarMenu" class="btn outline">Volver</button>
+        <button type="submit" class="btn success">Confirmar compra</button>
+      </div>
+    </form>
+  </section>
+
+
+  <!-- ---------- Boleta ---------- -->
+
+  <section class="boletaPago oculto" id="boletaPago">
+    <h2>Boleta</h2>
+    <pre id="boletaPagoTexto"></pre>
+    <div class="acciones-boleta">
+      <button id="btnSeguirComprando" class="btn primary">Seguir comprando</button>
+      <button id="btnTerminarCompra" class="btn outline">Terminar compra</button>
+    </div>
+
+  </section>
+
+  <!-- ---------- Historial de Boleta ---------- -->
+
+  <section id="historial" class="oculto">
+    <h2>Gracias por tu compra</h2>
+    <p class="muted">Aquí están todas tus boletas generadas:</p>
+    <div id="historialLista"></div>
+    <button id="cerrarHistorial" class="btn">Cerrar</button>
+  </section>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
