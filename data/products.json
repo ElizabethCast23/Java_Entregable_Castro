@@ -1,0 +1,7 @@
+[
+  {"id":1,"name":"Teclado Mecánico","category":"Periféricos","price":149.9,"stock":8,"img":"https://picsum.photos/seed/kb/400/260"},
+  {"id":2,"name":"Mouse Inalámbrico","category":"Periféricos","price":69.5,"stock":20,"img":"https://picsum.photos/seed/mouse/400/260"},
+  {"id":3,"name":"Monitor 27\"","category":"Monitores","price":899.0,"stock":5,"img":"https://picsum.photos/seed/monitor/400/260"},
+  {"id":4,"name":"SSD 1TB","category":"Almacenamiento","price":299.0,"stock":12,"img":"https://picsum.photos/seed/ssd/400/260"},
+  {"id":5,"name":"Auriculares BT","category":"Audio","price":119.0,"stock":16,"img":"https://picsum.photos/seed/head/400/260"}
+]

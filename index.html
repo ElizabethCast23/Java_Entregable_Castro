@@ -3,57 +3,105 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f172a" />
   <title>Menú Restaurante</title>
-  <!-- Hoja de estilos principal -->
-  <link rel="stylesheet" href="style.css">
+
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Toastify (toasts bonitos) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+  <!-- SweetAlert2 (modales) -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
+  <noscript>
+    <div style="padding:12px;background:#fee2e2;color:#991b1b;text-align:center">
+      Esta aplicación requiere JavaScript habilitado.
+    </div>
+  </noscript>
+
   <!-- ---------- Encabezado ---------- -->
-  <header class="app-header">
+  <header class="app-header" role="banner">
     <h1>Menú Restaurante</h1>
-
-    <!-- Menu del dia  -->
-    <div class="day-badge" id="etiquetaDia"></div>
-
+    <div class="day-badge" id="etiquetaDia" aria-live="polite"></div>
   </header>
 
-<!-- ---------- Contenido  (Menus // Carrito) ---------- -->
-  <main class="layout">
+  <!-- ---------- MODAL: Presentación + Elegir tipo de menú ---------- -->
+  <div id="tipoMenuModal" class="type-modal oculto" aria-modal="true" role="dialog">
+    <div class="type-modal__card" role="document">
+      <!-- 🌟 Presentación -->
+      <div class="intro">
+        <h2>¡Bienvenido(a) a <span style="color:var(--acc)">Nuestro Restaurante</span>!</h2>
+        <p class="muted">
+          Disfruta de nuestros platos tradicionales con el mejor sabor casero.
+          Antes de continuar, elige el tipo de menú que prefieres para hoy.
+        </p>
+        <hr style="border:none;border-top:1px solid var(--border);margin:14px 0;">
+      </div>
 
-    <!-- Menu -->
-    <section class="menu" id="menuCompleto"> </section>
+      <!-- Selección -->
+      <h3>Elige el tipo de menú</h3>
+      <p class="muted">Selecciona una opción para continuar tu pedido.</p>
 
-    <!-- Carrito  -->
-    <aside class="cart" id="ContenidoCarrito">
-      <h2>Pedido</h2>
+      <div class="type-modal__options">
+        <button class="type-card" data-choice="completo" type="button">
+          <span class="type-card__title">Completo</span>
+          <span class="type-card__desc">Entrada + Segundo + Bebida</span>
+        </button>
+
+        <button class="type-card" data-choice="medio" type="button">
+          <span class="type-card__title">Medio</span>
+          <span class="type-card__desc">Segundo + Bebida</span>
+        </button>
+      </div>
+
+      <div class="type-modal__actions">
+        <button id="cerrarTipoMenu" class="btn outline" type="button">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- Contenido (Menú // Carrito) ---------- -->
+  <main class="layout" role="main">
+    <!-- Menú -->
+    <section class="menu" id="menuCompleto" aria-label="Menú del día"></section>
+
+    <!-- Carrito -->
+    <aside class="cart" id="ContenidoCarrito" aria-label="Carrito de compras">
+      <h2>Pedido <span id="cartBadge" class="badge"></span></h2>
       <div id="listarCarrito"></div>
-      <div class="totals">
+
+      <div class="totals" aria-live="polite">
         <div>Subtotal: <strong id="subtotal">S/ 0.00</strong></div>
         <div>Total: <strong id="total">S/ 0.00</strong></div>
       </div>
-      <button id="vaciarCarrito" class="btn outline">Vaciar</button>
-      <button id="btnPago" class="btn primary">Continuar</button>
+
+      <div class="cart-actions">
+        <button id="vaciarCarrito" class="btn outline" type="button">Vaciar</button>
+        <button id="btnPago" class="btn primary" type="button">Continuar</button>
+      </div>
     </aside>
-
-
   </main>
 
   <!-- ---------- Datos del cliente ---------- -->
-  <section class="checkout oculto" id="checkout">
+  <section class="checkout oculto" id="checkout" aria-label="Datos del cliente">
     <h2>Datos del cliente</h2>
-    <form id="formCliente" class="form">
+    <form id="formCliente" class="form" novalidate>
       <label>Nombre y apellido
-        <input type="text" id="cliNombre" required />
+        <input type="text" id="cliNombre" autocomplete="name" required />
       </label>
       <label>Teléfono
-        <input type="tel" id="cliTelefono" required />
+        <input type="tel" id="cliTelefono" autocomplete="tel" pattern="\d{7,15}" required />
       </label>
       <label>DNI
-        <input type="text" id="cliDni" required />
+        <input type="text" id="cliDni" inputmode="numeric" pattern="\d{8}" required />
       </label>
       <label>Dirección
-        <input type="text" id="cliDireccion" required />
+        <input type="text" id="cliDireccion" autocomplete="street-address" required />
       </label>
 
       <div class="checkout-actions">
@@ -63,28 +111,36 @@
     </form>
   </section>
 
-
   <!-- ---------- Boleta ---------- -->
-
-  <section class="boletaPago oculto" id="boletaPago">
+  <section class="boletaPago oculto" id="boletaPago" aria-label="Boleta generada">
     <h2>Boleta</h2>
-    <pre id="boletaPagoTexto"></pre>
+    <pre id="boletaPagoTexto" aria-live="polite"></pre>
     <div class="acciones-boleta">
-      <button id="btnSeguirComprando" class="btn primary">Seguir comprando</button>
-      <button id="btnTerminarCompra" class="btn outline">Terminar compra</button>
+      <button id="btnSeguirComprando" class="btn primary" type="button">Seguir comprando</button>
+      <button id="btnTerminarCompra" class="btn outline" type="button">Terminar compra</button>
     </div>
-
   </section>
 
-  <!-- ---------- Historial de Boleta ---------- -->
-
-  <section id="historial" class="oculto">
+  <!-- ---------- Historial ---------- -->
+  <section id="historial" class="oculto" aria-label="Historial de boletas">
     <h2>Gracias por tu compra</h2>
     <p class="muted">Aquí están todas tus boletas generadas:</p>
     <div id="historialLista"></div>
-    <button id="cerrarHistorial" class="btn">Cerrar</button>
+    <button id="cerrarHistorial" class="btn" type="button">Cerrar</button>
   </section>
 
+  <!-- ---------- Panel Administrador (todas las boletas) ---------- -->
+  <section id="adminPanel" class="oculto" aria-label="Administrador">
+    <h2>Administrador — Boletas</h2>
+    <p class="muted">Abre este panel con <strong>Ctrl + Shift + A</strong> o agrega <code>?admin=1</code> a la URL.</p>
+    <div id="adminLista"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
+      <button id="adminExport" class="btn outline" type="button">Exportar JSON</button>
+      <button id="adminCerrar" class="btn" type="button">Cerrar</button>
+    </div>
+  </section>
+
+  <!-- Tu lógica (usar después de cargar las librerías) -->
   <script src="./app.js" defer></script>
 </body>
 </html>
